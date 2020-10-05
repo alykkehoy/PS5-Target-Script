@@ -10,29 +10,26 @@ wd = webdriver.Chrome(ChromeDriverManager().install())
 wd.get(URL)
 
 def main():
-    loaded = False
-    added = False
-    while not loaded:
-        try:
-            wd.find_element_by_css_selector('[data-test="preorderButton"]').click()
-            winsound.Beep(700, 1500)
-            print('*************************************')
-            print(datetime.datetime.now().strftime("[%m-%d-%Y %H:%M:%S]") + ' Available')
-            print('*************************************')
-            loaded = True
-            added = True
-
-        except:
+    while True:
+        loaded = False
+        while not loaded:
             try:
-                wd.find_element_by_css_selector('[data-test="preorderUnsellable"]')
-                print(datetime.datetime.now().strftime("[%m-%d-%Y %H:%M:%S]") + ' Unavailable')
+                wd.find_element_by_css_selector('[data-test="preorderButton"]').click()
+                winsound.Beep(700, 1500)
+                print('*************************************')
+                print(datetime.datetime.now().strftime("[%m-%d-%Y %H:%M:%S]") + ' Available')
+                print('*************************************')
                 loaded = True
-            except:
-                pass
 
-    if not added:
+            except:
+                try:
+                    wd.find_element_by_css_selector('[data-test="preorderUnsellable"]')
+                    print(datetime.datetime.now().strftime("[%m-%d-%Y %H:%M:%S]") + ' Unavailable')
+                    loaded = True
+                except:
+                    pass
+
         wd.refresh()
-        main()
                 
 
 if __name__ == '__main__':
